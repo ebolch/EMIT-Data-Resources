@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://nasa-openscapes.github.io/earthdata-cloud-cookbook/index.html</loc>
+    <lastmod>2023-09-21T03:23:13.281Z</lastmod>
+  </url>
+  <url>
+    <loc>https://nasa-openscapes.github.io/earthdata-cloud-cookbook/how-tos/How_to_find_EMIT_data_using_CMR_API.html</loc>
+    <lastmod>2023-09-07T03:23:11.362Z</lastmod>
+  </url>
+  <url>
+    <loc>https://nasa-openscapes.github.io/earthdata-cloud-cookbook/how-tos/How_to_Convert_to_ENVI.html</loc>
+    <lastmod>2023-09-07T03:23:10.609Z</lastmod>
+  </url>
+  <url>
+    <loc>https://nasa-openscapes.github.io/earthdata-cloud-cookbook/how-tos/How_to_Extract_Area.html</loc>
+    <lastmod>2023-09-21T03:25:15.120Z</lastmod>
+  </url>
+  <url>
+    <loc>https://nasa-openscapes.github.io/earthdata-cloud-cookbook/how-tos/How_to_Direct_S3_Access.html</loc>
+    <lastmod>2023-09-07T03:23:10.947Z</lastmod>
+  </url>
+  <url>
+    <loc>https://nasa-openscapes.github.io/earthdata-cloud-cookbook/tutorials/Exploring_EMIT_L2A_Reflectance.html</loc>
+    <lastmod>2023-09-21T03:24:55.279Z</lastmod>
+  </url>
+  <url>
+    <loc>https://nasa-openscapes.github.io/earthdata-cloud-cookbook/python-setup/index.html</loc>
+    <lastmod>2023-09-21T03:29:21.724Z</lastmod>
+  </url>
+</urlset>

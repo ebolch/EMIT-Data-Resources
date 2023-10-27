@@ -1,0 +1,67 @@
+project:
+  type: website
+  output-dir: docs
+
+website:  
+  page-navigation: true
+  title: "EMIT Data Resources"
+  site-url: https://nasa-openscapes.github.io/earthdata-cloud-cookbook
+  repo-url: https://github.com/nasa-openscapes/earthdata-cloud-cookbook
+  repo-actions: [edit, source, issue]
+
+  page-footer: 
+    left: "EMIT Data Resources, LP DAAC (2023)."
+  
+  sidebar:
+    title: "EMIT Data Resources Cookbook"
+    logo: images/lpdaac-logo-black.png
+    pinned: true
+    align: center
+    tools: 
+      - icon: globe
+        href: https://lpdaac.usgs.gov/
+        text: "LP DAAC Website"
+      - icon: github
+        href: https://github.com/nasa/EMIT-Data-Resources
+        text: "EMIT-Data-Resources Repository"
+        
+    style: "docked"
+    search: true
+    collapse-level: 1
+    contents:
+      - text: "Welcome"
+        href: index.qmd
+      - text: "Python Environment Setup"
+        href: python-setup/index.qmd
+      - section: "How to..."
+        contents:
+          - text: "Find and Access EMIT Data"    
+            href: how-tos/How_to_find_and_access_EMIT_data.ipynb
+          - text: "Find EMIT Data using CMR API"
+            href: how-tos/How_to_find_EMIT_data_using_CMR_API.ipynb
+          - text: "Use Direct S3 Access"
+            href: how-tos/How_to_Direct_S3_Access.ipynb
+          - text: "Orthorectify EMIT Data"
+            href: how-tos/How_to_Orthorectify.ipynb
+          - text: "Extract an Area of Interest"
+            href: how-tos/How_to_Extract_Area.ipynb
+          - text: "Extract Points to a CSV"
+            href: how-tos/How_to_Extract_Points.ipynb
+          - text: "Use Quality Data"
+            href: how-tos/How_to_use_EMIT_Quality_data.ipynb
+          - text: "Convert to ENVI format"
+            href: how-tos/How_to_Convert_to_ENVI.ipynb
+      - section: "Tutorials"
+        contents:
+          - text: "01 Exploring EMIT L2A Reflectance"
+            href: tutorials/Exploring_EMIT_L2A_Reflectance.ipynb
+
+format:
+  html:
+    theme:
+      light: cosmo
+      dark: [cosmo, theme-dark.scss]
+    code-background: true
+    code-copy: true
+    css: styles.css
+    toc: true

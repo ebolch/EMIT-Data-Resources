@@ -1,0 +1,21 @@
+---
+title: "EMIT Data Resources"  
+subtitle: "How to find, access, and work with EMIT data"  
+date: last-modified
+author: "LP DAAC Team and Contributors"  
+slug: index  
+---
+
+## Welcome
+
+**Welcome to the EMIT-Data-Resources Cookbook!**
+
+This Cookbook contains background information on the EMIT instrument and imaging spectroscopy as well as Python examples and tutorials for working with EMIT datasets.
+
+## About
+
+This Cookbook is being developed as part of the collaboration between the Land Processes Distributed Active Archive Center (LP DAAC) and the Jet Propulsion Laboratory (JPL). Special thanks to the the NASA-Openscapes Team, PO DAAC, NSIDC and our contributors!
+
+## Citation
+
+## License

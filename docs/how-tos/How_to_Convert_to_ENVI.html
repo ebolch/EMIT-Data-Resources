@@ -1,0 +1,1242 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.450">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>EMIT Data Resources - How To: Convert EMIT .nc to .envi</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-sidebar docked">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">
+      EMIT Data Resources Cookbook
+      </li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation docked overflow-auto">
+    <div class="pt-lg-2 mt-2 text-center sidebar-header sidebar-header-stacked">
+      <a href="../index.html" class="sidebar-logo-link">
+      <img src="../images/lpdaac-logo-black.png" alt="" class="sidebar-logo py-0 d-lg-inline d-none">
+      </a>
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">EMIT Data Resources Cookbook</a> 
+        <div class="sidebar-tools-main tools-wide">
+    <a href="https://lpdaac.usgs.gov/" rel="" title="LP DAAC Website" class="quarto-navigation-tool px-1" aria-label="LP DAAC Website"><i class="bi bi-globe"></i></a>
+    <a href="https://github.com/nasa/EMIT-Data-Resources" rel="" title="EMIT-Data-Resources Repository" class="quarto-navigation-tool px-1" aria-label="EMIT-Data-Resources Repository"><i class="bi bi-github"></i></a>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Welcome</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../python-setup/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Python Environment Setup</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="false">
+ <span class="menu-text">Tutorials</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../tutorials/Exploring_EMIT_L2A_Reflectance.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">01 Exploring EMIT L2A Reflectance</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#setup" id="toc-setup" class="nav-link active" data-scroll-target="#setup">Setup</a>
+  <ul class="collapse">
+  <li><a href="#authenticate-using-earthdata-login-and-download-the-required-granules" id="toc-authenticate-using-earthdata-login-and-download-the-required-granules" class="nav-link" data-scroll-target="#authenticate-using-earthdata-login-and-download-the-required-granules">Authenticate using Earthdata Login and Download the required Granules</a></li>
+  </ul></li>
+  <li><a href="#method-1-using-write_envi-from-the-emit_tools-module." id="toc-method-1-using-write_envi-from-the-emit_tools-module." class="nav-link" data-scroll-target="#method-1-using-write_envi-from-the-emit_tools-module.">Method 1: Using <code>write_envi</code> from the <code>emit_tools</code> module.</a></li>
+  <li><a href="#method-2-using-reformat.py-from-emit-utils" id="toc-method-2-using-reformat.py-from-emit-utils" class="nav-link" data-scroll-target="#method-2-using-reformat.py-from-emit-utils">Method 2: Using reformat.py from emit-utils</a>
+  <ul class="collapse">
+  <li><a href="#clone-and-install-emit-utils" id="toc-clone-and-install-emit-utils" class="nav-link" data-scroll-target="#clone-and-install-emit-utils">2.1 Clone and Install emit-utils</a></li>
+  <li><a href="#executing-the-reformat-script" id="toc-executing-the-reformat-script" class="nav-link" data-scroll-target="#executing-the-reformat-script">2.2 Executing the Reformat Script</a></li>
+  </ul></li>
+  <li><a href="#contact-info" id="toc-contact-info" class="nav-link" data-scroll-target="#contact-info">Contact Info:</a></li>
+  </ul>
+<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.dev/nasa-openscapes/earthdata-cloud-cookbook/blob/main/how-tos/How_to_Convert_to_ENVI.ipynb" class="toc-action">Edit this page</a></p><p><a href="https://github.com/nasa-openscapes/earthdata-cloud-cookbook/blob/main/how-tos/How_to_Convert_to_ENVI.ipynb" class="toc-action">View source</a></p><p><a href="https://github.com/nasa-openscapes/earthdata-cloud-cookbook/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">How To: Convert EMIT .nc to .envi</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<hr>
+<p>There are currently 2 similar methods to convert the EMIT netCDF4 files to <code>.envi</code> format. Note these only support L1B Radiance, L1B Obs, L2A Reflectance, L2A Reflectance Uncertainty, or L2A Mask to .envi. They do not yet support the L2B Mineral or L2B Mineral Uncertainty products. 1. The <code>write_envi</code> function in EMIT tools. This function is still being developed but will currently: - Write a GLT output to use for orthocorrection later - Functions from <code>emit_tools</code> can be used beforehand to orthorectify if so desired 2. The <code>reformat.py</code> script available in the <a href="https://github.com/emit-sds/emit-utils">emit-sds/emit-utils</a> repository can be used to convert EMIT netCDF files (as delivered to the LP DAAC) to ENVI files. This script also can apply the included GLT to orthorectify the image if desired.</p>
+<p>This jupyter notebook walks through how to use both methods to provide users with programmatic routes to accomplish their EMIT reformatting workflows.</p>
+<p><strong>Requirements:</strong> + A NASA <a href="https://urs.earthdata.nasa.gov/">Earthdata Login</a> account is required to download EMIT data<br>
++ Selected the <code>emit_tutorials</code> environment as the kernel for this notebook. + For instructions on setting up the environment, follow the the <code>setup_instructions.md</code> included in the <code>/setup/</code> folder of the repository.</p>
+<p><strong>Learning Objectives</strong> + How to use the <code>write_envi</code> function from <code>emit_tools</code> module to convert an EMIT netCDF4 to a <code>.envi</code> file. + How to use the <code>reformat.py</code> function from the <code>emit-utils</code> repository to convert an EMIT netCDF4 to a <code>.envi</code> file.</p>
+<hr>
+<hr>
+<section id="setup" class="level2">
+<h2 class="anchored" data-anchor-id="setup">Setup</h2>
+<p>Import packages</p>
+<div class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> earthaccess</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="authenticate-using-earthdata-login-and-download-the-required-granules" class="level3">
+<h3 class="anchored" data-anchor-id="authenticate-using-earthdata-login-and-download-the-required-granules">Authenticate using Earthdata Login and Download the required Granules</h3>
+<p>Login to your NASA Earthdata account and create a <code>.netrc</code> file using the <code>login</code> function from the <code>earthaccess</code> library. If you do not have an Earthdata Account, you can create one <a href="https://urs.earthdata.nasa.gov/home">here</a>.</p>
+<div class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>earthaccess.login(persist<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>EARTHDATA_USERNAME and EARTHDATA_PASSWORD are not set in the current environment, try setting them or use a different strategy (netrc, interactive)
+You're now authenticated with NASA Earthdata Login
+Using token with expiration date: 07/08/2023
+Using .netrc file for EDL</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="2">
+<pre><code>&lt;earthaccess.auth.Auth at 0x25e2e122010&gt;</code></pre>
+</div>
+</div>
+<p>For this notebook we will download the files necessary using <code>earthaccess</code>. You can also access the data in place or stream it, but this can slow due to the file sizes. Provide a URL for an EMIT L2A Reflectance granule.</p>
+<div class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>url <span class="op">=</span> <span class="st">'https://data.lpdaac.earthdatacloud.nasa.gov/lp-prod-protected/EMITL2ARFL.001/EMIT_L2A_RFL_001_20220903T163129_2224611_012/EMIT_L2A_RFL_001_20220903T163129_2224611_012.nc'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Get an HTTPS Session using your earthdata login, set a local path to save the file, and download the granule asset - This may take a while, the reflectance file is approximately 1.8 GB.</p>
+<div class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Get Https Session using Earthdata Login Info</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>fs <span class="op">=</span> earthaccess.get_fsspec_https_session()</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Retrieve granule asset ID from URL (to maintain existing naming convention)</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>granule_asset_id <span class="op">=</span> url.split(<span class="st">'/'</span>)[<span class="op">-</span><span class="dv">1</span>]</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Define Local Filepath</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>fp <span class="op">=</span> <span class="ss">f'../../data/</span><span class="sc">{</span>granule_asset_id<span class="sc">}</span><span class="ss">'</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Download the Granule Asset if it doesn't exist</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="kw">not</span> os.path.isfile(fp):</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    fs.download(url, fp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Now lets create an output folder where we will save the <code>.envi</code> files.</p>
+<div class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>outpath <span class="op">=</span> <span class="st">'../../data/envi'</span> </span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="kw">not</span> os.path.exists(outpath):</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    os.makedirs(outpath)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<hr>
+</section>
+</section>
+<section id="method-1-using-write_envi-from-the-emit_tools-module." class="level2">
+<h2 class="anchored" data-anchor-id="method-1-using-write_envi-from-the-emit_tools-module.">Method 1: Using <code>write_envi</code> from the <code>emit_tools</code> module.</h2>
+<p>Import the necessary packages for this method.</p>
+<div class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>sys.path.append(<span class="st">'../modules/'</span>)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> emit_tools <span class="im">as</span> et</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Open the granule using the <code>emit_xarray</code> function. We can orthorectify here if so desired.</p>
+<div class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>ds <span class="op">=</span> et.emit_xarray(fp, ortho<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>ds</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="7">
+
+<div><svg style="position: absolute; width: 0; height: 0; overflow: hidden">
+<defs>
+<symbol id="icon-database" viewbox="0 0 32 32">
+<path d="M16 0c-8.837 0-16 2.239-16 5v4c0 2.761 7.163 5 16 5s16-2.239 16-5v-4c0-2.761-7.163-5-16-5z"></path>
+<path d="M16 17c-8.837 0-16-2.239-16-5v6c0 2.761 7.163 5 16 5s16-2.239 16-5v-6c0 2.761-7.163 5-16 5z"></path>
+<path d="M16 26c-8.837 0-16-2.239-16-5v6c0 2.761 7.163 5 16 5s16-2.239 16-5v-6c0 2.761-7.163 5-16 5z"></path>
+</symbol>
+<symbol id="icon-file-text2" viewbox="0 0 32 32">
+<path d="M28.681 7.159c-0.694-0.947-1.662-2.053-2.724-3.116s-2.169-2.030-3.116-2.724c-1.612-1.182-2.393-1.319-2.841-1.319h-15.5c-1.378 0-2.5 1.121-2.5 2.5v27c0 1.378 1.122 2.5 2.5 2.5h23c1.378 0 2.5-1.122 2.5-2.5v-19.5c0-0.448-0.137-1.23-1.319-2.841zM24.543 5.457c0.959 0.959 1.712 1.825 2.268 2.543h-4.811v-4.811c0.718 0.556 1.584 1.309 2.543 2.268zM28 29.5c0 0.271-0.229 0.5-0.5 0.5h-23c-0.271 0-0.5-0.229-0.5-0.5v-27c0-0.271 0.229-0.5 0.5-0.5 0 0 15.499-0 15.5 0v7c0 0.552 0.448 1 1 1h7v19.5z"></path>
+<path d="M23 26h-14c-0.552 0-1-0.448-1-1s0.448-1 1-1h14c0.552 0 1 0.448 1 1s-0.448 1-1 1z"></path>
+<path d="M23 22h-14c-0.552 0-1-0.448-1-1s0.448-1 1-1h14c0.552 0 1 0.448 1 1s-0.448 1-1 1z"></path>
+<path d="M23 18h-14c-0.552 0-1-0.448-1-1s0.448-1 1-1h14c0.552 0 1 0.448 1 1s-0.448 1-1 1z"></path>
+</symbol>
+</defs>
+</svg>
+<style>/* CSS stylesheet for displaying xarray objects in jupyterlab.
+ *
+ */
+
+:root {
+  --xr-font-color0: var(--jp-content-font-color0, rgba(0, 0, 0, 1));
+  --xr-font-color2: var(--jp-content-font-color2, rgba(0, 0, 0, 0.54));
+  --xr-font-color3: var(--jp-content-font-color3, rgba(0, 0, 0, 0.38));
+  --xr-border-color: var(--jp-border-color2, #e0e0e0);
+  --xr-disabled-color: var(--jp-layout-color3, #bdbdbd);
+  --xr-background-color: var(--jp-layout-color0, white);
+  --xr-background-color-row-even: var(--jp-layout-color1, white);
+  --xr-background-color-row-odd: var(--jp-layout-color2, #eeeeee);
+}
+
+html[theme=dark],
+body[data-theme=dark],
+body.vscode-dark {
+  --xr-font-color0: rgba(255, 255, 255, 1);
+  --xr-font-color2: rgba(255, 255, 255, 0.54);
+  --xr-font-color3: rgba(255, 255, 255, 0.38);
+  --xr-border-color: #1F1F1F;
+  --xr-disabled-color: #515151;
+  --xr-background-color: #111111;
+  --xr-background-color-row-even: #111111;
+  --xr-background-color-row-odd: #313131;
+}
+
+.xr-wrap {
+  display: block !important;
+  min-width: 300px;
+  max-width: 700px;
+}
+
+.xr-text-repr-fallback {
+  /* fallback to plain text repr when CSS is not injected (untrusted notebook) */
+  display: none;
+}
+
+.xr-header {
+  padding-top: 6px;
+  padding-bottom: 6px;
+  margin-bottom: 4px;
+  border-bottom: solid 1px var(--xr-border-color);
+}
+
+.xr-header > div,
+.xr-header > ul {
+  display: inline;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.xr-obj-type,
+.xr-array-name {
+  margin-left: 2px;
+  margin-right: 10px;
+}
+
+.xr-obj-type {
+  color: var(--xr-font-color2);
+}
+
+.xr-sections {
+  padding-left: 0 !important;
+  display: grid;
+  grid-template-columns: 150px auto auto 1fr 20px 20px;
+}
+
+.xr-section-item {
+  display: contents;
+}
+
+.xr-section-item input {
+  display: none;
+}
+
+.xr-section-item input + label {
+  color: var(--xr-disabled-color);
+}
+
+.xr-section-item input:enabled + label {
+  cursor: pointer;
+  color: var(--xr-font-color2);
+}
+
+.xr-section-item input:enabled + label:hover {
+  color: var(--xr-font-color0);
+}
+
+.xr-section-summary {
+  grid-column: 1;
+  color: var(--xr-font-color2);
+  font-weight: 500;
+}
+
+.xr-section-summary > span {
+  display: inline-block;
+  padding-left: 0.5em;
+}
+
+.xr-section-summary-in:disabled + label {
+  color: var(--xr-font-color2);
+}
+
+.xr-section-summary-in + label:before {
+  display: inline-block;
+  content: '►';
+  font-size: 11px;
+  width: 15px;
+  text-align: center;
+}
+
+.xr-section-summary-in:disabled + label:before {
+  color: var(--xr-disabled-color);
+}
+
+.xr-section-summary-in:checked + label:before {
+  content: '▼';
+}
+
+.xr-section-summary-in:checked + label > span {
+  display: none;
+}
+
+.xr-section-summary,
+.xr-section-inline-details {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+.xr-section-inline-details {
+  grid-column: 2 / -1;
+}
+
+.xr-section-details {
+  display: none;
+  grid-column: 1 / -1;
+  margin-bottom: 5px;
+}
+
+.xr-section-summary-in:checked ~ .xr-section-details {
+  display: contents;
+}
+
+.xr-array-wrap {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 20px auto;
+}
+
+.xr-array-wrap > label {
+  grid-column: 1;
+  vertical-align: top;
+}
+
+.xr-preview {
+  color: var(--xr-font-color3);
+}
+
+.xr-array-preview,
+.xr-array-data {
+  padding: 0 5px !important;
+  grid-column: 2;
+}
+
+.xr-array-data,
+.xr-array-in:checked ~ .xr-array-preview {
+  display: none;
+}
+
+.xr-array-in:checked ~ .xr-array-data,
+.xr-array-preview {
+  display: inline-block;
+}
+
+.xr-dim-list {
+  display: inline-block !important;
+  list-style: none;
+  padding: 0 !important;
+  margin: 0;
+}
+
+.xr-dim-list li {
+  display: inline-block;
+  padding: 0;
+  margin: 0;
+}
+
+.xr-dim-list:before {
+  content: '(';
+}
+
+.xr-dim-list:after {
+  content: ')';
+}
+
+.xr-dim-list li:not(:last-child):after {
+  content: ',';
+  padding-right: 5px;
+}
+
+.xr-has-index {
+  font-weight: bold;
+}
+
+.xr-var-list,
+.xr-var-item {
+  display: contents;
+}
+
+.xr-var-item > div,
+.xr-var-item label,
+.xr-var-item > .xr-var-name span {
+  background-color: var(--xr-background-color-row-even);
+  margin-bottom: 0;
+}
+
+.xr-var-item > .xr-var-name:hover span {
+  padding-right: 5px;
+}
+
+.xr-var-list > li:nth-child(odd) > div,
+.xr-var-list > li:nth-child(odd) > label,
+.xr-var-list > li:nth-child(odd) > .xr-var-name span {
+  background-color: var(--xr-background-color-row-odd);
+}
+
+.xr-var-name {
+  grid-column: 1;
+}
+
+.xr-var-dims {
+  grid-column: 2;
+}
+
+.xr-var-dtype {
+  grid-column: 3;
+  text-align: right;
+  color: var(--xr-font-color2);
+}
+
+.xr-var-preview {
+  grid-column: 4;
+}
+
+.xr-index-preview {
+  grid-column: 2 / 5;
+  color: var(--xr-font-color2);
+}
+
+.xr-var-name,
+.xr-var-dims,
+.xr-var-dtype,
+.xr-preview,
+.xr-attrs dt {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-right: 10px;
+}
+
+.xr-var-name:hover,
+.xr-var-dims:hover,
+.xr-var-dtype:hover,
+.xr-attrs dt:hover {
+  overflow: visible;
+  width: auto;
+  z-index: 1;
+}
+
+.xr-var-attrs,
+.xr-var-data,
+.xr-index-data {
+  display: none;
+  background-color: var(--xr-background-color) !important;
+  padding-bottom: 5px !important;
+}
+
+.xr-var-attrs-in:checked ~ .xr-var-attrs,
+.xr-var-data-in:checked ~ .xr-var-data,
+.xr-index-data-in:checked ~ .xr-index-data {
+  display: block;
+}
+
+.xr-var-data > table {
+  float: right;
+}
+
+.xr-var-name span,
+.xr-var-data,
+.xr-index-name div,
+.xr-index-data,
+.xr-attrs {
+  padding-left: 25px !important;
+}
+
+.xr-attrs,
+.xr-var-attrs,
+.xr-var-data,
+.xr-index-data {
+  grid-column: 1 / -1;
+}
+
+dl.xr-attrs {
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: 125px auto;
+}
+
+.xr-attrs dt,
+.xr-attrs dd {
+  padding: 0;
+  margin: 0;
+  float: left;
+  padding-right: 10px;
+  width: auto;
+}
+
+.xr-attrs dt {
+  font-weight: normal;
+  grid-column: 1;
+}
+
+.xr-attrs dt:hover span {
+  display: inline-block;
+  background: var(--xr-background-color);
+  padding-right: 10px;
+}
+
+.xr-attrs dd {
+  grid-column: 2;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.xr-icon-database,
+.xr-icon-file-text2,
+.xr-no-icon {
+  display: inline-block;
+  vertical-align: middle;
+  width: 1em;
+  height: 1.5em !important;
+  stroke-width: 0;
+  stroke: currentColor;
+  fill: currentColor;
+}
+</style><pre class="xr-text-repr-fallback">&lt;xarray.Dataset&gt;
+Dimensions:           (latitude: 2009, longitude: 2353, wavelengths: 285)
+Coordinates:
+  * latitude          (latitude) float64 -39.31 -39.31 -39.31 ... -40.4 -40.4
+  * longitude         (longitude) float64 -62.51 -62.51 -62.51 ... -61.24 -61.24
+  * wavelengths       (wavelengths) float32 381.0 388.4 ... 2.486e+03 2.493e+03
+    good_wavelengths  (wavelengths) float32 1.0 1.0 1.0 1.0 ... 1.0 1.0 1.0 1.0
+    fwhm              (wavelengths) float32 8.415 8.415 8.415 ... 8.807 8.809
+    elev              (latitude, longitude) float32 nan nan nan ... nan nan nan
+    spatial_ref       int32 0
+Data variables:
+    reflectance       (latitude, longitude, wavelengths) float32 nan nan ... nan
+Attributes: (12/40)
+    ncei_template_version:             NCEI_NetCDF_Swath_Template_v2.0
+    summary:                           The Earth Surface Mineral Dust Source ...
+    keywords:                          Imaging Spectroscopy, minerals, EMIT, ...
+    Conventions:                       CF-1.63
+    sensor:                            EMIT (Earth Surface Mineral Dust Sourc...
+    instrument:                        EMIT
+    ...                                ...
+    spatial_ref:                       GEOGCS["WGS 84",DATUM["WGS_1984",SPHER...
+    geotransform:                      [-6.25120945e+01  5.42232520e-04 -0.00...
+    day_night_flag:                    Day
+    title:                             EMIT L2A Estimated Surface Reflectance...
+    granule_id:                        EMIT_L2A_RFL_001_20220903T163129_22246...
+    Orthorectified:                    True</pre><div class="xr-wrap" style="display:none"><div class="xr-header"><div class="xr-obj-type">xarray.Dataset</div></div><ul class="xr-sections"><li class="xr-section-item"><input id="section-c24fe0c6-12b0-4290-8363-e82042ee0f1b" class="xr-section-summary-in" type="checkbox" disabled=""><label for="section-c24fe0c6-12b0-4290-8363-e82042ee0f1b" class="xr-section-summary" title="Expand/collapse section">Dimensions:</label><div class="xr-section-inline-details"><ul class="xr-dim-list"><li><span class="xr-has-index">latitude</span>: 2009</li><li><span class="xr-has-index">longitude</span>: 2353</li><li><span class="xr-has-index">wavelengths</span>: 285</li></ul></div><div class="xr-section-details"></div></li><li class="xr-section-item"><input id="section-6e900d11-7279-4568-96b2-1c112ac1b995" class="xr-section-summary-in" type="checkbox" checked=""><label for="section-6e900d11-7279-4568-96b2-1c112ac1b995" class="xr-section-summary">Coordinates: <span>(7)</span></label><div class="xr-section-inline-details"></div><div class="xr-section-details"><ul class="xr-var-list"><li class="xr-var-item"><div class="xr-var-name"><span class="xr-has-index">latitude</span></div><div class="xr-var-dims">(latitude)</div><div class="xr-var-dtype">float64</div><div class="xr-var-preview xr-preview">-39.31 -39.31 ... -40.4 -40.4</div><input id="attrs-95d9ea42-ba11-476a-96c3-6ab09e508f1c" class="xr-var-attrs-in" type="checkbox"><label for="attrs-95d9ea42-ba11-476a-96c3-6ab09e508f1c" title="Show/Hide attributes"><svg class="icon xr-icon-file-text2"><use href="#icon-file-text2"></use></svg></label><input id="data-51ea2a2a-d908-46b0-9e59-16c871aceb1d" class="xr-var-data-in" type="checkbox"><label for="data-51ea2a2a-d908-46b0-9e59-16c871aceb1d" title="Show/Hide data repr"><svg class="icon xr-icon-database"><use href="#icon-database"></use></svg></label><div class="xr-var-attrs"><dl class="xr-attrs"><dt><span>long_name :</span></dt><dd>Latitude (WGS-84)</dd><dt><span>units :</span></dt><dd>degrees north</dd></dl></div><div class="xr-var-data"><pre>array([-39.30703 , -39.307572, -39.308115, ..., -40.394749, -40.395291,
+       -40.395833])</pre></div></li><li class="xr-var-item"><div class="xr-var-name"><span class="xr-has-index">longitude</span></div><div class="xr-var-dims">(longitude)</div><div class="xr-var-dtype">float64</div><div class="xr-var-preview xr-preview">-62.51 -62.51 ... -61.24 -61.24</div><input id="attrs-236ad04f-c591-4deb-a624-ebf60c8cb386" class="xr-var-attrs-in" type="checkbox"><label for="attrs-236ad04f-c591-4deb-a624-ebf60c8cb386" title="Show/Hide attributes"><svg class="icon xr-icon-file-text2"><use href="#icon-file-text2"></use></svg></label><input id="data-be504bd9-0637-431e-aaa4-d44e97974576" class="xr-var-data-in" type="checkbox"><label for="data-be504bd9-0637-431e-aaa4-d44e97974576" title="Show/Hide data repr"><svg class="icon xr-icon-database"><use href="#icon-database"></use></svg></label><div class="xr-var-attrs"><dl class="xr-attrs"><dt><span>long_name :</span></dt><dd>Longitude (WGS-84)</dd><dt><span>units :</span></dt><dd>degrees east</dd></dl></div><div class="xr-var-data"><pre>array([-62.511823, -62.511281, -62.510739, ..., -61.237577, -61.237035,
+       -61.236493])</pre></div></li><li class="xr-var-item"><div class="xr-var-name"><span class="xr-has-index">wavelengths</span></div><div class="xr-var-dims">(wavelengths)</div><div class="xr-var-dtype">float32</div><div class="xr-var-preview xr-preview">381.0 388.4 ... 2.486e+03 2.493e+03</div><input id="attrs-219fd42c-6af0-4ce4-ac22-da024bf717a9" class="xr-var-attrs-in" type="checkbox"><label for="attrs-219fd42c-6af0-4ce4-ac22-da024bf717a9" title="Show/Hide attributes"><svg class="icon xr-icon-file-text2"><use href="#icon-file-text2"></use></svg></label><input id="data-b3769e33-7273-481a-8606-7c91c90dd651" class="xr-var-data-in" type="checkbox"><label for="data-b3769e33-7273-481a-8606-7c91c90dd651" title="Show/Hide data repr"><svg class="icon xr-icon-database"><use href="#icon-database"></use></svg></label><div class="xr-var-attrs"><dl class="xr-attrs"><dt><span>long_name :</span></dt><dd>Wavelength Centers</dd><dt><span>units :</span></dt><dd>nm</dd></dl></div><div class="xr-var-data"><pre>array([ 381.00558,  388.4092 ,  395.81583, ..., 2478.153  , 2485.5386 ,
+       2492.9238 ], dtype=float32)</pre></div></li><li class="xr-var-item"><div class="xr-var-name"><span>good_wavelengths</span></div><div class="xr-var-dims">(wavelengths)</div><div class="xr-var-dtype">float32</div><div class="xr-var-preview xr-preview">1.0 1.0 1.0 1.0 ... 1.0 1.0 1.0 1.0</div><input id="attrs-3f220872-74c6-4fc7-8979-f2c5c7fcb44d" class="xr-var-attrs-in" type="checkbox"><label for="attrs-3f220872-74c6-4fc7-8979-f2c5c7fcb44d" title="Show/Hide attributes"><svg class="icon xr-icon-file-text2"><use href="#icon-file-text2"></use></svg></label><input id="data-3e1a4cba-eea8-4722-b78b-92dd09bd4e3c" class="xr-var-data-in" type="checkbox"><label for="data-3e1a4cba-eea8-4722-b78b-92dd09bd4e3c" title="Show/Hide data repr"><svg class="icon xr-icon-database"><use href="#icon-database"></use></svg></label><div class="xr-var-attrs"><dl class="xr-attrs"><dt><span>long_name :</span></dt><dd>Wavelengths where reflectance is useable: 1 = good data, 0 = bad data</dd><dt><span>units :</span></dt><dd>unitless</dd></dl></div><div class="xr-var-data"><pre>array([1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1.,
+       1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1.,
+       1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1.,
+       1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1.,
+       1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1.,
+       1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1.,
+       1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1.,
+       1., 1., 1., 1., 1., 1., 1., 1., 0., 0., 0., 0., 0., 0., 0., 0., 0.,
+       0., 0., 0., 0., 0., 0., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1.,
+       1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1.,
+       1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1.,
+       0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.,
+       0., 0., 0., 0., 0., 0., 0., 0., 0., 1., 1., 1., 1., 1., 1., 1., 1.,
+       1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1.,
+       1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1.,
+       1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1.,
+       1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1.], dtype=float32)</pre></div></li><li class="xr-var-item"><div class="xr-var-name"><span>fwhm</span></div><div class="xr-var-dims">(wavelengths)</div><div class="xr-var-dtype">float32</div><div class="xr-var-preview xr-preview">8.415 8.415 8.415 ... 8.807 8.809</div><input id="attrs-e2f875be-2a78-4b1c-a25b-77c9b14c5d65" class="xr-var-attrs-in" type="checkbox"><label for="attrs-e2f875be-2a78-4b1c-a25b-77c9b14c5d65" title="Show/Hide attributes"><svg class="icon xr-icon-file-text2"><use href="#icon-file-text2"></use></svg></label><input id="data-3e1a8c85-46a2-4c9c-979f-c30a1cbff6d1" class="xr-var-data-in" type="checkbox"><label for="data-3e1a8c85-46a2-4c9c-979f-c30a1cbff6d1" title="Show/Hide data repr"><svg class="icon xr-icon-database"><use href="#icon-database"></use></svg></label><div class="xr-var-attrs"><dl class="xr-attrs"><dt><span>long_name :</span></dt><dd>Full Width at Half Max</dd><dt><span>units :</span></dt><dd>nm</dd></dl></div><div class="xr-var-data"><pre>array([8.415, 8.415, 8.415, 8.415, 8.417, 8.418, 8.419, 8.421, 8.422,
+       8.424, 8.425, 8.426, 8.428, 8.429, 8.431, 8.432, 8.433, 8.435,
+       8.436, 8.438, 8.439, 8.44 , 8.442, 8.443, 8.445, 8.446, 8.447,
+       8.449, 8.45 , 8.452, 8.453, 8.454, 8.456, 8.457, 8.459, 8.46 ,
+       8.461, 8.463, 8.464, 8.466, 8.467, 8.468, 8.47 , 8.471, 8.473,
+       8.474, 8.475, 8.477, 8.478, 8.48 , 8.481, 8.482, 8.484, 8.485,
+       8.487, 8.488, 8.489, 8.491, 8.492, 8.494, 8.495, 8.496, 8.498,
+       8.499, 8.501, 8.502, 8.503, 8.505, 8.506, 8.508, 8.509, 8.51 ,
+       8.512, 8.513, 8.515, 8.516, 8.517, 8.519, 8.52 , 8.522, 8.523,
+       8.524, 8.526, 8.527, 8.529, 8.53 , 8.531, 8.533, 8.534, 8.536,
+       8.537, 8.538, 8.54 , 8.541, 8.543, 8.544, 8.545, 8.547, 8.548,
+       8.55 , 8.551, 8.552, 8.554, 8.555, 8.557, 8.558, 8.559, 8.561,
+       8.562, 8.564, 8.565, 8.566, 8.568, 8.569, 8.571, 8.572, 8.573,
+       8.575, 8.576, 8.578, 8.579, 8.58 , 8.582, 8.583, 8.585, 8.586,
+       8.587, 8.589, 8.59 , 8.592, 8.593, 8.594, 8.596, 8.597, 8.599,
+       8.6  , 8.601, 8.603, 8.604, 8.606, 8.607, 8.608, 8.61 , 8.611,
+       8.613, 8.614, 8.615, 8.617, 8.618, 8.62 , 8.621, 8.622, 8.624,
+       8.625, 8.627, 8.628, 8.629, 8.631, 8.632, 8.634, 8.635, 8.636,
+       8.638, 8.639, 8.641, 8.642, 8.643, 8.645, 8.646, 8.648, 8.649,
+       8.65 , 8.652, 8.653, 8.655, 8.656, 8.657, 8.659, 8.66 , 8.662,
+       8.663, 8.664, 8.666, 8.667, 8.669, 8.67 , 8.671, 8.673, 8.674,
+       8.676, 8.677, 8.678, 8.68 , 8.681, 8.683, 8.684, 8.685, 8.687,
+       8.688, 8.69 , 8.691, 8.692, 8.694, 8.695, 8.697, 8.698, 8.699,
+       8.701, 8.702, 8.704, 8.705, 8.706, 8.708, 8.709, 8.711, 8.712,
+       8.714, 8.715, 8.716, 8.718, 8.719, 8.721, 8.722, 8.723, 8.725,
+       8.726, 8.727, 8.729, 8.73 , 8.732, 8.733, 8.734, 8.736, 8.737,
+       8.739, 8.74 , 8.741, 8.743, 8.744, 8.746, 8.747, 8.748, 8.75 ,
+       8.751, 8.753, 8.754, 8.755, 8.757, 8.758, 8.76 , 8.761, 8.763,
+       8.764, 8.765, 8.767, 8.768, 8.77 , 8.771, 8.772, 8.774, 8.775,
+       8.777, 8.778, 8.779, 8.781, 8.782, 8.783, 8.785, 8.786, 8.788,
+       8.789, 8.79 , 8.792, 8.793, 8.795, 8.796, 8.797, 8.799, 8.8  ,
+       8.802, 8.803, 8.804, 8.806, 8.807, 8.809], dtype=float32)</pre></div></li><li class="xr-var-item"><div class="xr-var-name"><span>elev</span></div><div class="xr-var-dims">(latitude, longitude)</div><div class="xr-var-dtype">float32</div><div class="xr-var-preview xr-preview">nan nan nan nan ... nan nan nan nan</div><input id="attrs-dbc5c0f6-c381-40c4-91c6-8cc86b633169" class="xr-var-attrs-in" type="checkbox"><label for="attrs-dbc5c0f6-c381-40c4-91c6-8cc86b633169" title="Show/Hide attributes"><svg class="icon xr-icon-file-text2"><use href="#icon-file-text2"></use></svg></label><input id="data-bd9ac938-dbd8-45ae-bdc9-2b877109ad52" class="xr-var-data-in" type="checkbox"><label for="data-bd9ac938-dbd8-45ae-bdc9-2b877109ad52" title="Show/Hide data repr"><svg class="icon xr-icon-database"><use href="#icon-database"></use></svg></label><div class="xr-var-attrs"><dl class="xr-attrs"><dt><span>long_name :</span></dt><dd>Surface Elevation</dd><dt><span>units :</span></dt><dd>m</dd></dl></div><div class="xr-var-data"><pre>array([[nan, nan, nan, ..., nan, nan, nan],
+       [nan, nan, nan, ..., nan, nan, nan],
+       [nan, nan, nan, ..., nan, nan, nan],
+       ...,
+       [nan, nan, nan, ..., nan, nan, nan],
+       [nan, nan, nan, ..., nan, nan, nan],
+       [nan, nan, nan, ..., nan, nan, nan]], dtype=float32)</pre></div></li><li class="xr-var-item"><div class="xr-var-name"><span>spatial_ref</span></div><div class="xr-var-dims">()</div><div class="xr-var-dtype">int32</div><div class="xr-var-preview xr-preview">0</div><input id="attrs-6c88a359-a330-425d-841d-27ba7e7b0ec8" class="xr-var-attrs-in" type="checkbox"><label for="attrs-6c88a359-a330-425d-841d-27ba7e7b0ec8" title="Show/Hide attributes"><svg class="icon xr-icon-file-text2"><use href="#icon-file-text2"></use></svg></label><input id="data-59161275-f4f4-4f51-8f35-72546ebf50c7" class="xr-var-data-in" type="checkbox"><label for="data-59161275-f4f4-4f51-8f35-72546ebf50c7" title="Show/Hide data repr"><svg class="icon xr-icon-database"><use href="#icon-database"></use></svg></label><div class="xr-var-attrs"><dl class="xr-attrs"><dt><span>crs_wkt :</span></dt><dd>GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,AUTHORITY["EPSG","7030"]],AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["degree",0.0174532925199433,AUTHORITY["EPSG","9122"]],AXIS["Latitude",NORTH],AXIS["Longitude",EAST],AUTHORITY["EPSG","4326"]]</dd><dt><span>semi_major_axis :</span></dt><dd>6378137.0</dd><dt><span>semi_minor_axis :</span></dt><dd>6356752.314245179</dd><dt><span>inverse_flattening :</span></dt><dd>298.257223563</dd><dt><span>reference_ellipsoid_name :</span></dt><dd>WGS 84</dd><dt><span>longitude_of_prime_meridian :</span></dt><dd>0.0</dd><dt><span>prime_meridian_name :</span></dt><dd>Greenwich</dd><dt><span>geographic_crs_name :</span></dt><dd>WGS 84</dd><dt><span>horizontal_datum_name :</span></dt><dd>World Geodetic System 1984</dd><dt><span>grid_mapping_name :</span></dt><dd>latitude_longitude</dd><dt><span>spatial_ref :</span></dt><dd>GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,AUTHORITY["EPSG","7030"]],AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["degree",0.0174532925199433,AUTHORITY["EPSG","9122"]],AXIS["Latitude",NORTH],AXIS["Longitude",EAST],AUTHORITY["EPSG","4326"]]</dd></dl></div><div class="xr-var-data"><pre>array(0)</pre></div></li></ul></div></li><li class="xr-section-item"><input id="section-bdf67bda-65c1-4a44-8786-a5de17033194" class="xr-section-summary-in" type="checkbox" checked=""><label for="section-bdf67bda-65c1-4a44-8786-a5de17033194" class="xr-section-summary">Data variables: <span>(1)</span></label><div class="xr-section-inline-details"></div><div class="xr-section-details"><ul class="xr-var-list"><li class="xr-var-item"><div class="xr-var-name"><span>reflectance</span></div><div class="xr-var-dims">(latitude, longitude, wavelengths)</div><div class="xr-var-dtype">float32</div><div class="xr-var-preview xr-preview">nan nan nan nan ... nan nan nan nan</div><input id="attrs-198fed25-0215-414c-ba4f-ca4e863cbbe9" class="xr-var-attrs-in" type="checkbox"><label for="attrs-198fed25-0215-414c-ba4f-ca4e863cbbe9" title="Show/Hide attributes"><svg class="icon xr-icon-file-text2"><use href="#icon-file-text2"></use></svg></label><input id="data-b0cbe954-ea0a-4611-942b-7a62b1b87895" class="xr-var-data-in" type="checkbox"><label for="data-b0cbe954-ea0a-4611-942b-7a62b1b87895" title="Show/Hide data repr"><svg class="icon xr-icon-database"><use href="#icon-database"></use></svg></label><div class="xr-var-attrs"><dl class="xr-attrs"><dt><span>long_name :</span></dt><dd>Surface Reflectance</dd><dt><span>units :</span></dt><dd>unitless</dd></dl></div><div class="xr-var-data"><pre>array([[[nan, nan, nan, ..., nan, nan, nan],
+        [nan, nan, nan, ..., nan, nan, nan],
+        [nan, nan, nan, ..., nan, nan, nan],
+        ...,
+        [nan, nan, nan, ..., nan, nan, nan],
+        [nan, nan, nan, ..., nan, nan, nan],
+        [nan, nan, nan, ..., nan, nan, nan]],
+
+       [[nan, nan, nan, ..., nan, nan, nan],
+        [nan, nan, nan, ..., nan, nan, nan],
+        [nan, nan, nan, ..., nan, nan, nan],
+        ...,
+        [nan, nan, nan, ..., nan, nan, nan],
+        [nan, nan, nan, ..., nan, nan, nan],
+        [nan, nan, nan, ..., nan, nan, nan]],
+
+       [[nan, nan, nan, ..., nan, nan, nan],
+        [nan, nan, nan, ..., nan, nan, nan],
+        [nan, nan, nan, ..., nan, nan, nan],
+        ...,
+...
+        ...,
+        [nan, nan, nan, ..., nan, nan, nan],
+        [nan, nan, nan, ..., nan, nan, nan],
+        [nan, nan, nan, ..., nan, nan, nan]],
+
+       [[nan, nan, nan, ..., nan, nan, nan],
+        [nan, nan, nan, ..., nan, nan, nan],
+        [nan, nan, nan, ..., nan, nan, nan],
+        ...,
+        [nan, nan, nan, ..., nan, nan, nan],
+        [nan, nan, nan, ..., nan, nan, nan],
+        [nan, nan, nan, ..., nan, nan, nan]],
+
+       [[nan, nan, nan, ..., nan, nan, nan],
+        [nan, nan, nan, ..., nan, nan, nan],
+        [nan, nan, nan, ..., nan, nan, nan],
+        ...,
+        [nan, nan, nan, ..., nan, nan, nan],
+        [nan, nan, nan, ..., nan, nan, nan],
+        [nan, nan, nan, ..., nan, nan, nan]]], dtype=float32)</pre></div></li></ul></div></li><li class="xr-section-item"><input id="section-5a3864a2-5906-49d9-b590-d4143ea360b4" class="xr-section-summary-in" type="checkbox"><label for="section-5a3864a2-5906-49d9-b590-d4143ea360b4" class="xr-section-summary">Indexes: <span>(3)</span></label><div class="xr-section-inline-details"></div><div class="xr-section-details"><ul class="xr-var-list"><li class="xr-var-item"><div class="xr-index-name"><div>latitude</div></div><div class="xr-index-preview">PandasIndex</div><div></div><input id="index-899f9b70-ecf4-4314-842f-4d4b66523272" class="xr-index-data-in" type="checkbox"><label for="index-899f9b70-ecf4-4314-842f-4d4b66523272" title="Show/Hide index repr"><svg class="icon xr-icon-database"><use href="#icon-database"></use></svg></label><div class="xr-index-data"><pre>PandasIndex(Index([ -39.30703026376183, -39.307572496282084, -39.308114728802344,
+         -39.3086569613226,  -39.30919919384286,  -39.30974142636311,
+        -39.31028365888337, -39.310825891403624, -39.311368123923884,
+        -39.31191035644414,
+       ...
+        -40.39095307175431, -40.391495304274564, -40.392037536794824,
+        -40.39257976931508,  -40.39312200183534,  -40.39366423435559,
+        -40.39420646687584, -40.394748699396104,  -40.39529093191636,
+        -40.39583316443662],
+      dtype='float64', name='latitude', length=2009))</pre></div></li><li class="xr-var-item"><div class="xr-index-name"><div>longitude</div></div><div class="xr-index-preview">PandasIndex</div><div></div><input id="index-05434a5f-6477-4ff9-a7ba-ac40b19c31a9" class="xr-index-data-in" type="checkbox"><label for="index-05434a5f-6477-4ff9-a7ba-ac40b19c31a9" title="Show/Hide index repr"><svg class="icon xr-icon-database"><use href="#icon-database"></use></svg></label><div class="xr-index-data"><pre>PandasIndex(Index([ -62.51182341653617, -62.511281184015914, -62.510738951495654,
+         -62.5101967189754,  -62.50965448645514,  -62.50911225393489,
+        -62.50857002141463, -62.508027788894374, -62.507485556374114,
+        -62.50694332385386,
+       ...
+         -61.2413726215755,  -61.24083038905524,  -61.24028815653499,
+        -61.23974592401473, -61.239203691494474,  -61.23866145897422,
+        -61.23811922645396,  -61.23757699393371,  -61.23703476141345,
+       -61.236492528893194],
+      dtype='float64', name='longitude', length=2353))</pre></div></li><li class="xr-var-item"><div class="xr-index-name"><div>wavelengths</div></div><div class="xr-index-preview">PandasIndex</div><div></div><input id="index-da7c475a-cdf5-4c80-af7d-f11db3cf9934" class="xr-index-data-in" type="checkbox"><label for="index-da7c475a-cdf5-4c80-af7d-f11db3cf9934" title="Show/Hide index repr"><svg class="icon xr-icon-database"><use href="#icon-database"></use></svg></label><div class="xr-index-data"><pre>PandasIndex(Index([ 381.0055847167969,  388.4092102050781,  395.8158264160156,
+       403.22540283203125, 410.63800048828125,  418.0535888671875,
+        425.4721374511719,  432.8927001953125,  440.3172607421875,
+        447.7427978515625,
+       ...
+        2426.440185546875,  2433.830322265625,   2441.21826171875,
+          2448.6064453125,  2455.994384765625,  2463.381591796875,
+        2470.767822265625,  2478.153076171875,   2485.53857421875,
+           2492.923828125],
+      dtype='float32', name='wavelengths', length=285))</pre></div></li></ul></div></li><li class="xr-section-item"><input id="section-b8140be9-65de-4cc8-8b70-359ec667d088" class="xr-section-summary-in" type="checkbox"><label for="section-b8140be9-65de-4cc8-8b70-359ec667d088" class="xr-section-summary">Attributes: <span>(40)</span></label><div class="xr-section-inline-details"></div><div class="xr-section-details"><dl class="xr-attrs"><dt><span>ncei_template_version :</span></dt><dd>NCEI_NetCDF_Swath_Template_v2.0</dd><dt><span>summary :</span></dt><dd>The Earth Surface Mineral Dust Source Investigation (EMIT) is an Earth Ventures-Instrument (EVI-4) Mission that maps the surface mineralogy of arid dust source regions via imaging spectroscopy in the visible and short-wave infrared (VSWIR). Installed on the International Space Station (ISS), the EMIT instrument is a Dyson imaging spectrometer that uses contiguous spectroscopic measurements from 410 to 2450 nm to resolve absoprtion features of iron oxides, clays, sulfates, carbonates, and other dust-forming minerals. During its one-year mission, EMIT will observe the sunlit Earth's dust source regions that occur within +/-52° latitude and produce maps of the source regions that can be used to improve forecasts of the role of mineral dust in the radiative forcing (warming or cooling) of the atmosphere.\n\nThis file contains L2A estimated surface reflectances and geolocation data. Reflectance estimates are created using an Optimal Estimation technique - see ATBD for details. Reflectance values are reported as fractions (relative to 1). Geolocation data (latitude, longitude, height) and a lookup table to project the data are also included.</dd><dt><span>keywords :</span></dt><dd>Imaging Spectroscopy, minerals, EMIT, dust, radiative forcing</dd><dt><span>Conventions :</span></dt><dd>CF-1.63</dd><dt><span>sensor :</span></dt><dd>EMIT (Earth Surface Mineral Dust Source Investigation)</dd><dt><span>instrument :</span></dt><dd>EMIT</dd><dt><span>platform :</span></dt><dd>ISS</dd><dt><span>institution :</span></dt><dd>NASA Jet Propulsion Laboratory/California Institute of Technology</dd><dt><span>license :</span></dt><dd>https://science.nasa.gov/earth-science/earth-science-data/data-information-policy/</dd><dt><span>naming_authority :</span></dt><dd>LPDAAC</dd><dt><span>date_created :</span></dt><dd>2023-03-20T14:50:38Z</dd><dt><span>keywords_vocabulary :</span></dt><dd>NASA Global Change Master Directory (GCMD) Science Keywords</dd><dt><span>stdname_vocabulary :</span></dt><dd>NetCDF Climate and Forecast (CF) Metadata Convention</dd><dt><span>creator_name :</span></dt><dd>Jet Propulsion Laboratory/California Institute of Technology</dd><dt><span>creator_url :</span></dt><dd>https://earth.jpl.nasa.gov/emit/</dd><dt><span>project :</span></dt><dd>Earth Surface Mineral Dust Source Investigation</dd><dt><span>project_url :</span></dt><dd>https://emit.jpl.nasa.gov/</dd><dt><span>publisher_name :</span></dt><dd>NASA LPDAAC</dd><dt><span>publisher_url :</span></dt><dd>https://lpdaac.usgs.gov</dd><dt><span>publisher_email :</span></dt><dd>lpdaac@usgs.gov</dd><dt><span>identifier_product_doi_authority :</span></dt><dd>https://doi.org</dd><dt><span>flight_line :</span></dt><dd>emit20220903t163129_o24611_s000</dd><dt><span>time_coverage_start :</span></dt><dd>2022-09-03T16:31:29+0000</dd><dt><span>time_coverage_end :</span></dt><dd>2022-09-03T16:31:41+0000</dd><dt><span>software_build_version :</span></dt><dd>010603</dd><dt><span>software_delivery_version :</span></dt><dd>010610</dd><dt><span>product_version :</span></dt><dd>V001</dd><dt><span>history :</span></dt><dd>PGE Run Command: {python /beegfs/store/emit/ops/repos/emit-sds-l2a/spectrum_quality.py /tmp/emit/ops/emit20220903t163129_emit.L2AReflectance_20221111t160436/output/emit20220903t163129_rfl /tmp/emit/ops/emit20220903t163129_emit.L2AReflectance_20221111t160436/output/emit20220903t163129_rfl_quality.txt}, PGE Input Files: {radiance_file=/beegfs/store/emit/ops/data/acquisitions/20220903/emit20220903t163129/l1b/emit20220903t163129_o24611_s000_l1b_rdn_b0106_v01.img, pixel_locations_file=/beegfs/store/emit/ops/data/acquisitions/20220903/emit20220903t163129/l1b/emit20220903t163129_o24611_s000_l1b_loc_b0106_v01.img, observation_parameters_file=/beegfs/store/emit/ops/data/acquisitions/20220903/emit20220903t163129/l1b/emit20220903t163129_o24611_s000_l1b_obs_b0106_v01.img, surface_model_config=/beegfs/store/emit/ops/repos/emit-sds-l2a/surface/surface_20221020.json}</dd><dt><span>crosstrack_orientation :</span></dt><dd>as seen on ground</dd><dt><span>easternmost_longitude :</span></dt><dd>-61.236221412633064</dd><dt><span>northernmost_latitude :</span></dt><dd>-39.3067591475017</dd><dt><span>westernmost_longitude :</span></dt><dd>-62.5120945327963</dd><dt><span>southernmost_latitude :</span></dt><dd>-40.39610428069674</dd><dt><span>spatialResolution :</span></dt><dd>0.000542232520256367</dd><dt><span>spatial_ref :</span></dt><dd>GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,AUTHORITY["EPSG","7030"]],AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["degree",0.0174532925199433,AUTHORITY["EPSG","9122"]],AXIS["Latitude",NORTH],AXIS["Longitude",EAST],AUTHORITY["EPSG","4326"]]</dd><dt><span>geotransform :</span></dt><dd>[-6.25120945e+01  5.42232520e-04 -0.00000000e+00 -3.93067591e+01
+ -0.00000000e+00 -5.42232520e-04]</dd><dt><span>day_night_flag :</span></dt><dd>Day</dd><dt><span>title :</span></dt><dd>EMIT L2A Estimated Surface Reflectance 60 m V001</dd><dt><span>granule_id :</span></dt><dd>EMIT_L2A_RFL_001_20220903T163129_2224611_012</dd><dt><span>Orthorectified :</span></dt><dd>True</dd></dl></div></li></ul></div></div>
+</div>
+</div>
+<p>Now, write the dataset as an <code>.envi</code> output. If we chose not to orthorectify, you can include a <code>glt</code> file to orthorectify later.</p>
+<div class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>et.write_envi(ds, outpath, overwrite<span class="op">=</span><span class="va">False</span>, extension<span class="op">=</span><span class="st">'.img'</span>, interleave<span class="op">=</span><span class="st">'BIL'</span>, glt_file<span class="op">=</span><span class="va">False</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<hr>
+</section>
+<section id="method-2-using-reformat.py-from-emit-utils" class="level2">
+<h2 class="anchored" data-anchor-id="method-2-using-reformat.py-from-emit-utils">Method 2: Using reformat.py from emit-utils</h2>
+<section id="clone-and-install-emit-utils" class="level3">
+<h3 class="anchored" data-anchor-id="clone-and-install-emit-utils">2.1 Clone and Install emit-utils</h3>
+<p>Clone the <a href="https://github.com/emit-sds/emit-utils">emit-utils</a> repository.</p>
+<div class="cell" data-tags="[]" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>git clone https:<span class="op">//</span>github.com<span class="op">/</span>emit<span class="op">-</span>sds<span class="op">/</span>emit<span class="op">-</span>utils.git ..<span class="op">/</span>emit_utils<span class="op">/</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Cloning into '../emit_utils'...</code></pre>
+</div>
+</div>
+<p>This will copy the <code>emit-utils</code> repository to a folder within this repository.</p>
+<p>After you have copied it, use <code>pip</code> package manager to install the directory as a package to ensure you have all of the dependencies and be used in the command line.</p>
+<blockquote class="blockquote">
+<p><strong>This requires that some dependencies already be installed to work properly on Windows. If you have created the Python environment described in the <a href="../../setup/setup_instructions.md">setup instructions</a> it should work.</strong></p>
+</blockquote>
+<div class="cell" data-tags="[]" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>pip install <span class="op">--</span>editable ..<span class="op">/</span>emit_utils</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Obtaining file:///C:/Users/ebolch/repos/EMIT-Data-Resources/python/emit_utils
+  Preparing metadata (setup.py): started
+  Preparing metadata (setup.py): finished with status 'done'
+Requirement already satisfied: gdal&gt;=2.0 in c:\users\ebolch\appdata\local\mambaforge\envs\emit_tutorials_311\lib\site-packages (from emit-utils==1.2.3) (3.6.4)
+Requirement already satisfied: spectral&gt;=0.21 in c:\users\ebolch\appdata\local\mambaforge\envs\emit_tutorials_311\lib\site-packages (from emit-utils==1.2.3) (0.23.1)
+Requirement already satisfied: numpy&gt;=1.19.2 in c:\users\ebolch\appdata\local\mambaforge\envs\emit_tutorials_311\lib\site-packages (from emit-utils==1.2.3) (1.24.4)
+Requirement already satisfied: netcdf4&gt;=1.5.8 in c:\users\ebolch\appdata\local\mambaforge\envs\emit_tutorials_311\lib\site-packages (from emit-utils==1.2.3) (1.6.4)
+Collecting argparse&gt;=1.0 (from emit-utils==1.2.3)
+  Using cached argparse-1.4.0-py2.py3-none-any.whl (23 kB)
+Requirement already satisfied: cftime in c:\users\ebolch\appdata\local\mambaforge\envs\emit_tutorials_311\lib\site-packages (from netcdf4&gt;=1.5.8-&gt;emit-utils==1.2.3) (1.6.2)
+Requirement already satisfied: certifi in c:\users\ebolch\appdata\local\mambaforge\envs\emit_tutorials_311\lib\site-packages (from netcdf4&gt;=1.5.8-&gt;emit-utils==1.2.3) (2023.5.7)
+Installing collected packages: argparse, emit-utils
+  Running setup.py develop for emit-utils
+Successfully installed argparse-1.4.0 emit-utils-1.2.3</code></pre>
+</div>
+</div>
+<p>After successfully installing <code>emit-utils</code>, you can use the scripts contained within as part of your workflows.</p>
+</section>
+<section id="executing-the-reformat-script" class="level3">
+<h3 class="anchored" data-anchor-id="executing-the-reformat-script">2.2 Executing the Reformat Script</h3>
+<p>Before calling the <code>reformat.py</code> script, make sure you have an output directory for the <code>.envi</code> files that will be produced.</p>
+<div class="cell" data-tags="[]" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>outpath <span class="op">=</span> <span class="st">'../../data/envi'</span> </span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="kw">not</span> os.path.exists(outpath):</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>    os.makedirs(outpath)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Now, execute the <code>reformat.py</code> script contained in the emit-utils repository. When executing this script, provide the path to the <code>.nc</code> file, followed by the directory to place the <code>.envi</code> files in. If you wish to apply the GLT or orthorectify, include <code>--orthorectify</code> as an argument.</p>
+<div class="cell" data-tags="[]" data-execution_count="12">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>python ..<span class="op">/</span>emit_utils<span class="op">/</span>emit_utils<span class="op">/</span>reformat.py ..<span class="op">/</span>..<span class="op">/</span>data<span class="op">/</span>EMIT_L2A_RFL_001_20220903T163129_2224611_012.nc ..<span class="op">/</span>..<span class="op">/</span>data<span class="op">/</span>envi<span class="op">/</span> <span class="op">--</span>orthorectify</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>This will orthorectify the image, create an ENVI header, and save it in <code>.envi</code> format inside the <code>../data/envi</code> folder.</p>
+<hr>
+</section>
+</section>
+<section id="contact-info" class="level2">
+<h2 class="anchored" data-anchor-id="contact-info">Contact Info:</h2>
+<p>Email: LPDAAC@usgs.gov<br>
+Voice: +1-866-573-3222<br>
+Organization: Land Processes Distributed Active Archive Center (LP DAAC)¹<br>
+Website: <a href="https://lpdaac.usgs.gov/" class="uri">https://lpdaac.usgs.gov/</a><br>
+Date last modified: 07-06-2023</p>
+<p>¹Work performed under USGS contract G15PD00467 for NASA contract NNG14HH33I.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  let localAlternateSentinel = 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">EMIT Data Resources, LP DAAC (2023).</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+
+
+</body></html>
